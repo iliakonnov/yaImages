@@ -1,9 +1,9 @@
 /// <reference path="ref/jquery.d.ts" />
 /// <reference path="ref/js-cookie.d.ts" />
 'use strict';
-var auth;
-var token;
-var main;
+var authElem;
+var tokenElem;
+var mainElem;
 
 function removeHash() {
     var scrollV, scrollH, loc = window.location;
@@ -40,7 +40,7 @@ function load(offset) {
                     element.text.indexOf("://vk.com/doc") != -1 &&
                     element.attachments.filter(el => el.type == "doc")
                 ) {
-                    main.after('<span class="item">' + element.text + '</span>');
+                    mainElem.after('<span class="item">' + element.text + '</span>');
                     result++;
                 }
             });
@@ -50,12 +50,12 @@ function load(offset) {
 }
 
 window.onload = function() {
-    auth = $('#auth');
-    token = $('#token');
-    main = $('#main')
+    authElem = $('#auth');
+    tokenElem = $('#token');
+    mainElem = $('#main')
 
-    auth.hide();
-    token.hide();
+    authElem.hide();
+    tokenElem.hide();
     if (window.location.hash) {
         var token = window.location.hash.substr(window.location.hash.indexOf('access_token='))
             .split('&')[0].split('=')[1];
@@ -69,10 +69,10 @@ window.onload = function() {
     } else {
         var token = Cookies.get('token');
         if (!token)
-            auth.show();
+            authElem.show();
         else {
-            token.text(token);
-            token.show();
+            tokenElem.text(token);
+            tokenElem.show();
             load(0);
         }
     }
