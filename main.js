@@ -3,7 +3,7 @@
 var authElem;
 var mainElem;
 var authorized = false;
-var Offset = 0;
+var offset = 0;
 
 function loadImages() {
     VK.Api.call('wall.get', {
@@ -17,8 +17,8 @@ function loadImages() {
                 element.attachments.filter(el => el.type == "doc")
             ) {
                 mainElem.append('<span class="item">' + element.text + '</span>');
-                Offset++;
             }
+            offset++;
         });
     });
 }
@@ -26,8 +26,11 @@ function loadImages() {
 function auth() {
     VK.Auth.login(function(session, status) {
         if (status == "connected") {
+            authorized = true;
             authElem.hide();
             loadImages();
+        } else {
+            alert("Auth error. Status: " + status)
         }
     });
 }
