@@ -1,3 +1,7 @@
-.imageItem {
-    width: 604;
+.imagePanel {
+    display: inline-block;
+}
+
+.imageCaption {
+    width: 350px;
 }

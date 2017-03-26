@@ -33,19 +33,21 @@ function loadImages() {
                 var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
                 var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_big;
                 var text = urlify(element.text);
-                $(
-                    '<div class="panel panel-default">' +
+                var elem = $(
+                    '<div class="panel panel-default imagePanel">' +
                     '    <div class="panel-heading">' + date + '</div>' +
-                    '    <div class="panel-body"><div class="imageItem">' +
+                    '    <div class="panel-body"><div class="thumbnail">' +
                     '        <img src="' + src + '"></img>' +
-                    '        <p>' + text + '</p>' +
+                    '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
                     '    </div></div>' +
                     '</div>'
-                ).mouseenter(function() {
+                );
+                elem.find('img').mouseenter(function() {
                     $(this).attr('src', bigSrc)
                 }).mouseleave(function() {
                     $(this).attr('src', src)
-                }).appendTo(mainElem);
+                });
+                elem.appendTo(mainElem);
             }
             offset++;
         });
