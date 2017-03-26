@@ -39,6 +39,9 @@ $(window).ready(function() {
     authElem = $('#auth');
     mainElem = $('#main')
 
+    VK.init({
+        apiId: 5947241
+    });
     authElem.on('click', auth);
 });
 
