@@ -25,7 +25,7 @@ function loadImages() {
 
 function auth() {
     VK.Auth.login(function(result) {
-        if (result[status] == "connected") {
+        if (result.status == "connected") {
             authorized = true;
             authElem.hide();
             loadImages();
