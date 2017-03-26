@@ -17,7 +17,7 @@ function urlify(text) {
 }
 
 function loadImages() {
-    laoding = true;
+    loading = true;
     loadElem.show(0);
     if (errorOccured) {
         errorOccured = false;
