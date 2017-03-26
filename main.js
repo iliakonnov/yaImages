@@ -27,14 +27,8 @@ function loadImages(offset) {
     var result = 0; // Images added
     $.ajax({
         dataType: "json",
-        url: "https://api.vk.com/method/wall.get",
+        url: "https://api.vk.com/method/wall.get?access_token=" + token + "&domain=pictures.yandex&count=100&offset=" + offset,
         async: false,
-        data: {
-            access_token: token,
-            domain: 'pictures.yandex',
-            count: 100,
-            offset: offset
-        },
         success: function(data) {
             data.response.items.forEach(function(element) {
                 if (
