@@ -5,6 +5,23 @@ var auth;
 var token;
 var main;
 
+function removeHash() {
+    var scrollV, scrollH, loc = window.location;
+    if ("pushState" in history)
+        history.pushState("", document.title, loc.pathname + loc.search);
+    else {
+        // Prevent scrolling by storing the page's current scroll offset
+        scrollV = document.body.scrollTop;
+        scrollH = document.body.scrollLeft;
+
+        loc.hash = "";
+
+        // Restore the scroll offset, should be flicker free
+        document.body.scrollTop = scrollV;
+        document.body.scrollLeft = scrollH;
+    }
+}
+
 function load(offset) {
     var result = 0; // Images added
     $.ajax({
@@ -44,13 +61,16 @@ window.onload = function() {
             .split('&')[0].split('=')[1];
         var expires = window.location.hash.substr(window.location.hash.indexOf('expires_in='))
             .split('&')[0].split('=')[1];
-        if (expires != '0') Cookies.set('token', token, { 'expires': expires / (60 * 60 * 24) })
-        else Cookies.set('token', token)
+        if (expires != '0')
+            Cookies.set('token', token, { 'expires': expires / (60 * 60 * 24) });
+        else
+            Cookies.set('token', token);
+        removeHash();
     } else {
         var token = Cookies.get('token');
-        if (!token) {
+        if (!token)
             auth.show();
-        } else {
+        else {
             token.text(token);
             token.show();
             load(0);
