@@ -24,13 +24,14 @@ function loadImages() {
 }
 
 function auth() {
-    VK.Auth.login(function(session, status) {
-        if (status == "connected") {
+    VK.Auth.login(function(result) {
+        if (result[status] == "connected") {
             authorized = true;
             authElem.hide();
             loadImages();
         } else {
-            alert("Auth error. Status: " + status)
+            alert("Auth error.");
+            console.log(result);
         }
     });
 }
