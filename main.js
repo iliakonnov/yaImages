@@ -5,6 +5,10 @@ var mainElem;
 var authorized = false;
 var offset = 0;
 
+function urlify(text) {
+    return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1">$1</a>')
+}
+
 function loadImages() {
     VK.Api.call('wall.get', {
         domain: 'pictures.yandex',
@@ -17,7 +21,18 @@ function loadImages() {
                 element.text.indexOf("://vk.com/doc") != -1 &&
                 element.attachments.filter(el => el.type == "doc")
             ) {
-                mainElem.append('<span class="item">' + element.text + '</span>');
+                /*
+                <li>
+                    <img src={element.attachments.filter(el => el.type == "photo")}></img>
+                    <p>
+                        <span class="bg-info">{new Date(element.date*1000).toDateString()}</span>
+                        {urlify(element.text)}
+                    </p>
+                </li>
+                */
+                mainElem.append('<li><img src=' + element.attachments.filter(el => el.type == "photo") +
+                    '</img><p><span class="bg-info">' + new Date(element.date * 1000).toDateString() +
+                    '</span>' + urlify(element.text) + '</li>');
             }
             offset++;
         });
