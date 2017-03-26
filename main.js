@@ -92,8 +92,8 @@ $(window).ready(function() {
     VK.init({
         apiId: 5947241
     });
-    authElem.onclick(auth);
-    manualLoadBtnElem.onclick(loadImages);
+    authElem.on('click', auth);
+    manualLoadBtnElem.on('click', loadImages);
 });
 
 $(window).scroll(function() {
