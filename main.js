@@ -22,17 +22,18 @@ function loadImages() {
                 element.attachments.filter(el => el.type == "doc")
             ) {
                 /*
-                <li>
-                    <img src={element.attachments.filter(el => el.type == "photo")}></img>
+                <li class="list-group-item">
+                    <img src={element.attachments.filter(el => el.type == "photo")[0].src_big}></img>
                     <p>
                         <span class="bg-info">{new Date(element.date*1000).toDateString()}</span>
                         {urlify(element.text)}
                     </p>
                 </li>
                 */
-                mainElem.append('<li><img src=' + element.attachments.filter(el => el.type == "photo") +
-                    '</img><p><span class="bg-info">' + new Date(element.date * 1000).toDateString() +
-                    '</span>' + urlify(element.text) + '</li>');
+                mainElem.append(
+                    '<li class="list-group-item"><img src=' + element.attachments.filter(el => el.type == "photo")[0].src_big +
+                    '</img><p><span class="bg-info">' + new Date(element.date * 1000).toDateString() + '</span>' + urlify(element.text) + '</li>'
+                );
             }
             offset++;
         });
