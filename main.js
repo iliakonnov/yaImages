@@ -12,13 +12,12 @@ function loadImages() {
         offset: offset
     }, function(r) {
         r.response.forEach(function(element) {
-            if ("text" in element && "attachments" in element) {
-                if (
-                    element.text.indexOf("://vk.com/doc") != -1 &&
-                    element.attachments.filter(el => el.type == "doc")
-                ) {
-                    mainElem.append('<span class="item">' + element.text + '</span>');
-                }
+            if (element != null && typeof element == 'object' &&
+                "text" in element && "attachments" in element &&
+                element.text.indexOf("://vk.com/doc") != -1 &&
+                element.attachments.filter(el => el.type == "doc")
+            ) {
+                mainElem.append('<span class="item">' + element.text + '</span>');
             }
             offset++;
         });
