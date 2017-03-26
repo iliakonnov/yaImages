@@ -1,6 +1,32 @@
 /// <reference path="ref/jquery.d.ts" />
 /// <reference path="ref/js-cookie.d.ts" />
 
+function load(offset) {
+    var result = 0;
+    var main = $('#main')
+    $.ajax({
+        dataType: "json",
+        url: "https://api.vk.com/method/wall.get",
+        async: false,
+        data: {
+            access_token: token,
+            domain: 'pictures.yandex',
+            count: 100,
+            offset: offset
+        },
+        success: function(data) {
+            data.response.items.forEach(function(element) {
+                if (
+                    element.text.indexOf("://vk.com/doc") != -1 &&
+                    element.attachments.filter(el => el.type == "doc")
+                ) {
+                    main.after('<span class="item">' + element.text + '</span>')
+                }
+            });
+        }
+    });
+}
+
 window.onload = function() {
     $('#auth').hide();
     $('#token').hide();
@@ -13,9 +39,18 @@ window.onload = function() {
         else Cookies.set('token', token)
     } else {
         var token = Cookies.get('token');
-        if (!token) $('#auth').show();
-        else {
-            $('#token').text(token).show();
+        if (!token) {
+            $('#auth').show();
+        } else {
+            $('#token').text(token);
+            $('#token').show();
+            load(0);
         }
     }
 }
+
+$(window).scroll(function() {
+    if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+        alert("bottom!");
+    }
+});
