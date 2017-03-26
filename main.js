@@ -22,17 +22,15 @@ function loadImages() {
                 element.attachments.filter(el => el.type == "doc")
             ) {
                 /*
-                <li class="list-group-item">
+                <li class="list-group-item imageItem">
                     <img src={element.attachments.filter(el => el.type == "photo")[0].src_big}></img>
-                    <p>
-                        <span class="bg-info">{new Date(element.date*1000).toDateString()}</span>
-                        {urlify(element.text)}
-                    </p>
+                    <h6 class="bg-info">{new Date(element.date*1000).toLocaleDateString()}</h6>
+                    <p>{urlify(element.text)}</p>
                 </li>
                 */
                 mainElem.append(
-                    '<li class="list-group-item"><img src=' + element.attachments.filter(el => el.type == "photo")[0].src_big +
-                    '</img><p><span class="bg-info">' + new Date(element.date * 1000).toDateString() + '</span>' + urlify(element.text) + '</li>'
+                    '<li class="list-group-item imageItem"><img src="' + element.attachments.filter(el => el.type == "photo")[0].photo.src_big +
+                    '"></img><h6 class="bg-info">' + new Date(element.date * 1000).toLocaleDateString() + '</h6><p>' + urlify(element.text) + '</p></li>'
                 );
             }
             offset++;
