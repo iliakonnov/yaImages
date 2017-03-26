@@ -4,6 +4,7 @@
 var authElem;
 var tokenElem;
 var mainElem;
+var offset = 0;
 
 function removeHash() {
     var scrollV, scrollH, loc = window.location;
@@ -22,7 +23,7 @@ function removeHash() {
     }
 }
 
-function load(offset) {
+function loadImages(offset) {
     var result = 0; // Images added
     $.ajax({
         dataType: "json",
@@ -49,13 +50,13 @@ function load(offset) {
     return result;
 }
 
-window.onload = function() {
+$(window).ready(function() {
     authElem = $('#auth');
     tokenElem = $('#token');
     mainElem = $('#main')
 
-    authElem.hide();
-    tokenElem.hide();
+    authElem.hide(0);
+    tokenElem.hide(0);
     if (window.location.hash) {
         var token = window.location.hash.substr(window.location.hash.indexOf('access_token='))
             .split('&')[0].split('=')[1];
@@ -69,17 +70,17 @@ window.onload = function() {
     } else {
         var token = Cookies.get('token');
         if (!token)
-            authElem.show();
+            authElem.show(0);
         else {
             tokenElem.text(token);
-            tokenElem.show();
-            load(0);
+            tokenElem.show(0);
+            offset += loadImages(0);
         }
     }
-}
+});
 
 $(window).scroll(function() {
     if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-        alert("bottom!");
+        offset += loadImages(offset);
     }
 });
