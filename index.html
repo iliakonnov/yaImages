@@ -15,9 +15,19 @@
 <body>
     <div class="container">
         <div>
-            <button class="button" id="auth">Authorize</a>
+            <button class="btn" id="auth">Authorize</a>
         </div>
-        <div><ul class="list-inline list-group" id="main"></ul></div>
+        <div class="panel-group" id="main"></div>
+
+        <div id="loader"><div class="progress progress-striped active">
+            <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            </div>
+        </div></div>
+
+        <div id="end">
+            <hr />
+            <p class="bg-primary text-center">THE END.</p>
+        </div>
     </div>
 </body>
 
