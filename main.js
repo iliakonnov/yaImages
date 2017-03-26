@@ -1,5 +1,4 @@
 /// <reference path="ref/jquery.d.ts" />
-/// <reference path="ref/js-cookie.d.ts" />
 'use strict';
 var authElem;
 var mainElem;
