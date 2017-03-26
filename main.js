@@ -23,12 +23,10 @@ function removeHash() {
     }
 }
 
-function loadImages(offset) {
-    var result = 0; // Images added
+function loadImages() {
     $.ajax({
         dataType: "json",
         url: "https://api.vk.com/method/wall.get?access_token=" + token + "&domain=pictures.yandex&count=100&offset=" + offset,
-        async: false,
         success: function(data) {
             data.response.items.forEach(function(element) {
                 if (
@@ -36,12 +34,11 @@ function loadImages(offset) {
                     element.attachments.filter(el => el.type == "doc")
                 ) {
                     mainElem.append('<span class="item">' + element.text + '</span>');
-                    result++;
+                    offset++;
                 }
             });
         }
     });
-    return result;
 }
 
 $(window).ready(function() {
@@ -68,13 +65,13 @@ $(window).ready(function() {
         else {
             tokenElem.text(token);
             tokenElem.show(0);
-            offset += loadImages(0);
+            loadImages();
         }
     }
 });
 
 $(window).scroll(function() {
     if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-        offset += loadImages(offset);
+        loadImages();
     }
 });
