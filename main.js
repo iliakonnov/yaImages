@@ -40,7 +40,7 @@ function load(offset) {
                     element.text.indexOf("://vk.com/doc") != -1 &&
                     element.attachments.filter(el => el.type == "doc")
                 ) {
-                    mainElem.after('<span class="item">' + element.text + '</span>');
+                    mainElem.append('<span class="item">' + element.text + '</span>');
                     result++;
                 }
             });
