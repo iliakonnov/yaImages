@@ -1,15 +1,15 @@
 /// <reference path="ref/jquery.d.ts" />
 /// <reference path="ref/js-cookie.d.ts" />
-
+'use strict';
 var auth;
 var token;
 var main;
 
 function removeHash() {
     var scrollV, scrollH, loc = window.location;
-    if ("pushState" in history)
+    if ("pushState" in history) {
         history.pushState("", document.title, loc.pathname + loc.search);
-    else {
+    } else {
         // Prevent scrolling by storing the page's current scroll offset
         scrollV = document.body.scrollTop;
         scrollH = document.body.scrollLeft;
@@ -55,7 +55,7 @@ window.onload = function() {
     main = $('#main')
 
     auth.hide();
-    toke.hide();
+    token.hide();
     if (window.location.hash) {
         var token = window.location.hash.substr(window.location.hash.indexOf('access_token='))
             .split('&')[0].split('=')[1];
