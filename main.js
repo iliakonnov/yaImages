@@ -6,6 +6,7 @@ var authElem;
 var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
+var loading = false;
 var errorOccured = false;
 var allImagesShown = false;
 var authorized = false;
@@ -16,6 +17,7 @@ function urlify(text) {
 }
 
 function loadImages() {
+    laoding = true;
     loadElem.show(0);
     if (errorOccured) {
         errorOccured = false;
@@ -64,6 +66,7 @@ function loadImages() {
                 offset++;
             });
         }
+        loading = false;
         loadElem.hide(0);
     });
 }
@@ -97,7 +100,7 @@ $(window).ready(function() {
 });
 
 $(window).scroll(function() {
-    if (!allImagesShown && authorized && !errorOccured &&
+    if (!allImagesShown && authorized && !errorOccured && !loading &&
         $(window).scrollTop() + $(window).height() == $(document).height() // Bottom
     ) {
         loadImages();
