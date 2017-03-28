@@ -86,7 +86,7 @@ function loadImages(onComplete, callback) {
             count: 100,
             offset: offset
         }, addImages);
-    } while (!callback)
+    } while (!callback())
 }
 
 function auth() {
