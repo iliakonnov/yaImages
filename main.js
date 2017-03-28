@@ -83,6 +83,7 @@ function auth() {
             console.log(result);
         }
     });
+    highlight();
 }
 
 function highlight() {
@@ -113,7 +114,6 @@ $(window).ready(function() {
     });
     authElem.on('click', auth);
     manualLoadBtnElem.on('click', loadImages);
-    highlight();
 });
 
 $(window).scroll(function() {
