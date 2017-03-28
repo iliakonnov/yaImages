@@ -119,8 +119,6 @@ function highlight(elem) {
     }
 }
 
-function
-
 $(window).ready(function() {
     authElem = $('#auth');
     mainElem = $('#main');
