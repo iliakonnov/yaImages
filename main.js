@@ -58,7 +58,7 @@ function loadImages() {
                         '    </div></div>' +
                         '</div>'
                     );
-                    Intense(elem.get(0));
+                    Intense(elem.find('img')[0]);
                     elem.find('.btn').click(function(e) {
                         e.preventDefault();
                         window.location.hash = elId;
@@ -95,7 +95,7 @@ function highlight() {
         if (elem.length != 0) {
             $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
             elem.removeClass('panel-default').addClass('panel-primary');
-            elem.get(0).scrollIntoView();
+            elem[0].scrollIntoView();
             highlighted = true;
         } else if (allImagesShown) {
             $('#myModal').modal('show');
