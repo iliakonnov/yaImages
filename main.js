@@ -9,6 +9,7 @@ var manualLoadBtnElem;
 var loading = false;
 var errorOccured = false;
 var allImagesShown = false;
+var highlighted = false;
 var authorized = false;
 var offset = 0;
 
@@ -61,7 +62,10 @@ function loadImages() {
                     }).mouseleave(function() {
                         $(this).attr('src', src)
                     });
-                    elem.find('a')[0].click(highlight);
+                    elem.find('a')[0].click(function() {
+                        highlighted = false;
+                        highlight();
+                    });
                     elem.appendTo(mainElem);
                 }
                 offset++;
@@ -69,6 +73,7 @@ function loadImages() {
         }
         loading = false;
         loadElem.hide(0);
+        highlight();
     });
 }
 
@@ -83,20 +88,17 @@ function auth() {
             console.log(result);
         }
     });
-    highlight();
 }
 
 function highlight() {
-    if (window.location.hash) {
-        elem = $(window.location.hash);
-        while (elem.length == 0 && loading) {
-            loadImages();
-            elem = $(window.location.hash);
-        }
+    if (window.location.hash && !highlighted) {
+        var elem = $(window.location.hash);
         if (elem.length != 0) {
             elem.removeClass('panel-default').addClass('panel-primary');
-        } else {
+            highlighted = true;
+        } else if (allImagesShown) {
             $('#myModal').modal('show');
+            highlighted = true;
         }
     }
 }
