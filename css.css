@@ -5,3 +5,7 @@
 .imageCaption {
     width: 350px;
 }
+
+.image {
+    cursor: url('./plus_cursor.png') 25 25, auto;
+}

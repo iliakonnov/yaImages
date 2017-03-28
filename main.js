@@ -53,16 +53,12 @@ function loadImages() {
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
                         '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
-                        '        <img src="' + src + '"></img>' +
+                        '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
                         '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
                         '    </div></div>' +
                         '</div>'
                     );
-                    elem.find('img').mouseenter(function() {
-                        $(this).attr('src', bigSrc)
-                    }).mouseleave(function() {
-                        $(this).attr('src', src)
-                    });
+                    Intense(elem.get(0));
                     elem.find('.btn').click(function(e) {
                         e.preventDefault();
                         window.location.hash = elId;
