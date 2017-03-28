@@ -6,6 +6,7 @@ var authElem;
 var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
+var calendar;
 var loading = false;
 var errorOccured = false;
 var allImagesShown = false;
@@ -18,62 +19,63 @@ function urlify(text) {
 }
 
 function loadImages() {
-    loading = true;
-    loadElem.show(0);
-    if (errorOccured) {
-        errorOccured = false;
-        manualLoadElem.hide(0);
-    }
-    VK.Api.call('wall.get', {
-        domain: 'pictures.yandex',
-        count: 100,
-        offset: offset
-    }, function(r) {
-        if ("error" in r) {
-            alert('Error №' + r.error.error_code + ': ' + r.error.error_msg);
-            errorOccured = true;
-            manualLoadElem.show(0);
-        } else {
-            if (r.response.length == 0) {
-                allImagesShown = true;
-                endElem.show(0);
-            }
-            r.response.forEach(function(element) {
-                if (element != null && typeof element == 'object' &&
-                    "text" in element && "attachments" in element &&
-                    element.text.indexOf("://vk.com/doc") != -1 &&
-                    element.attachments.filter(el => el.type == "doc")
-                ) {
-                    var date = new Date(element.date * 1000).toLocaleDateString();
-                    var elId = 'a' + date.split('.').join('_')
-                    var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
-                    var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_xxxbig;
-                    var text = urlify(element.text);
-                    var elem = $(
-                        '<div class="panel panel-default imagePanel" id="' + elId + '">' +
-                        '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
-                        '    <div class="panel-body"><div class="thumbnail">' +
-                        '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
-                        '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
-                        '    </div></div>' +
-                        '</div>'
-                    );
-                    Intense(elem.find('img')[0]);
-                    elem.find('.btn').click(function(e) {
-                        e.preventDefault();
-                        window.location.hash = elId;
-                        highlighted = false;
-                        highlight();
-                    });
-                    elem.appendTo(mainElem);
-                }
-                offset++;
-            });
+    do {
+        loading = true;
+        loadElem.show(0);
+        if (errorOccured) {
+            errorOccured = false;
+            manualLoadElem.hide(0);
         }
-        loading = false;
-        loadElem.hide(0);
-        highlight();
-    });
+        VK.Api.call('wall.get', {
+            domain: 'pictures.yandex',
+            count: 100,
+            offset: offset
+        }, function(r) {
+            if ("error" in r) {
+                alert('Error №' + r.error.error_code + ': ' + r.error.error_msg);
+                errorOccured = true;
+                manualLoadElem.show(0);
+            } else {
+                if (r.response.length < 100) {
+                    allImagesShown = true;
+                    endElem.show(0);
+                }
+                r.response.forEach(function(element) {
+                    if (element != null && typeof element == 'object' &&
+                        "text" in element && "attachments" in element &&
+                        element.text.indexOf("://vk.com/doc") != -1 &&
+                        element.attachments.filter(el => el.type == "doc")
+                    ) {
+                        var date = new Date(element.date * 1000).toLocaleDateString();
+                        var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
+                        var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
+                        var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_xxxbig;
+                        var text = urlify(element.text);
+                        var elem = $(
+                            '<div class="panel panel-default imagePanel" id="' + elId + '">' +
+                            '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
+                            '    <div class="panel-body"><div class="thumbnail">' +
+                            '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
+                            '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
+                            '    </div></div>' +
+                            '</div>'
+                        );
+                        Intense(elem.find('img')[0]);
+                        elem.find('.btn').click(function(e) {
+                            e.preventDefault();
+                            window.location.hash = elId;
+                            highlighted = false;
+                            highlightByHash();
+                        });
+                        elem.appendTo(mainElem);
+                    }
+                    offset++;
+                });
+            }
+            loading = false;
+            loadElem.hide(0);
+        });
+    } while (!highlightHash())
 }
 
 function auth() {
@@ -89,20 +91,35 @@ function auth() {
     });
 }
 
-function highlight() {
+function highlightHash() {
     if (window.location.hash && !highlighted) {
-        var elem = $(window.location.hash);
-        if (elem.length != 0) {
-            $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
-            elem.removeClass('panel-default').addClass('panel-primary');
-            elem[0].scrollIntoView();
-            highlighted = true;
-        } else if (allImagesShown) {
-            $('#myModal').modal('show');
-            highlighted = true;
-        }
+        var result = highlight($(window.location.hash));
+        if (result) highlighted = true;
+        return result
+    } else return true;
+}
+
+function highlightDate(date) {
+    return highlight($('.panel-heading:contains("' + date.toLocaleDateString() + '")'));
+}
+
+function highlight(elem) {
+    if (elem.length != 0) {
+        $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
+        elem.removeClass('panel-default').addClass('panel-primary');
+        elem[0].scrollIntoView();
+        highlighted = true;
+        return true;
+    } else if (allImagesShown) {
+        $('#myModal').modal('show');
+        highlighted = true;
+        return true;
+    } else {
+        return false;
     }
 }
+
+function
 
 $(window).ready(function() {
     authElem = $('#auth');
@@ -117,6 +134,12 @@ $(window).ready(function() {
     });
     authElem.on('click', auth);
     manualLoadBtnElem.on('click', loadImages);
+    var calendar = new Pikaday({
+        field: $('calendar')[0],
+        onSelect: function(date) {
+            highlightDate(date);
+        }
+    });
 });
 
 $(window).scroll(function() {
