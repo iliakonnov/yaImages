@@ -51,7 +51,7 @@ function loadImages() {
                     var text = urlify(element.text);
                     var elem = $(
                         '<div class="panel panel-default imagePanel" id="a' + elId + '">' +
-                        '    <div class="panel-heading"><a href="#a' + elId + '">' + date + '</a></div>' +
+                        '    <div class="panel-heading"><button class="btn btn-default">' + date + '</a></div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
                         '        <img src="' + src + '"></img>' +
                         '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
@@ -63,7 +63,8 @@ function loadImages() {
                     }).mouseleave(function() {
                         $(this).attr('src', src)
                     });
-                    elem.find('a')[0].click(function() {
+                    elem.find('button')[0].click(function() {
+                        window.location.hash = elId;
                         highlighted = false;
                         highlight();
                     });
@@ -96,6 +97,7 @@ function highlight() {
         var elem = $(window.location.hash);
         if (elem.length != 0) {
             elem.removeClass('panel-default').addClass('panel-primary');
+            elem.get(0).scrollIntoView();
             highlighted = true;
         } else if (allImagesShown) {
             $('#myModal').modal('show');
