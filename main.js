@@ -65,7 +65,7 @@ function loadImages() {
                             e.preventDefault();
                             window.location.hash = elId;
                             highlighted = false;
-                            highlightByHash();
+                            highlightHash();
                         });
                         elem.appendTo(mainElem);
                     }
@@ -108,11 +108,9 @@ function highlight(elem) {
         $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
         elem.removeClass('panel-default').addClass('panel-primary');
         elem[0].scrollIntoView();
-        highlighted = true;
         return true;
     } else if (allImagesShown) {
         $('#myModal').modal('show');
-        highlighted = true;
         return true;
     } else {
         return false;

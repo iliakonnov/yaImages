@@ -19,46 +19,48 @@
 
 <body>
     <div class="container-fluid">
-        <a class="github-fork-ribbon left-top" href="https://github.com/iliakonnov/yaImages" title="Fork me on GitHub">Fork me on GitHub</a>
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <p>Image not found</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <nav class="col-sm-3">
-            <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="15">
-                <li>
-                    Search: <input type="text" id="calendar" aria-label="Use the arrow keys to pick a date">
-                </li>
-            </ul>
-        </nav>
-        <div class="col-sm-9">
-            <div>
-                <button class="btn" id="auth">Authorize</button>
-            </div>
-            <div class="panel-group" id="main">
-            </div>
-
-            <div id="loader">
-                <div class="progress progress-striped active">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <div class="row">
+            <a class="github-fork-ribbon left-top" href="https://github.com/iliakonnov/yaImages" title="Fork me on GitHub">Fork me on GitHub</a>
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Image not found</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="manualLoad">
-                <button class="btn" id="manualLoadBtn">Load more</button>
-            </div>
+            <nav class="col-sm-3 dateSearch">
+                <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="15">
+                    <li>
+                        Search: <input type="text" class="form-control" id="calendar" aria-label="Use the arrow keys to pick a date">
+                    </li>
+                </ul>
+            </nav>
+            <div class="col-sm-9">
+                <div>
+                    <button class="btn" id="auth">Authorize</button>
+                </div>
+                <div class="panel-group" id="main">
+                </div>
 
-            <div id="end">
-                <hr />
-                <p class="bg-primary text-center">THE END.</p>
+                <div id="loader">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+                <div id="manualLoad">
+                    <button class="btn" id="manualLoadBtn">Load more</button>
+                </div>
+
+                <div id="end">
+                    <hr />
+                    <p class="bg-primary text-center">THE END.</p>
+                </div>
             </div>
         </div>
     </div>
