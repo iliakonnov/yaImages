@@ -19,17 +19,17 @@ function urlify(text) {
 }
 
 function addImages(response) {
-    if ("error" in r) {
+    if ("error" in response) {
         $('#modalText').text('Error №' + r.error.error_code + ': ' + r.error.error_msg);
         $('#myModal').modal('show');
         errorOccured = true;
         manualLoadElem.show(0);
     } else {
-        if (r.response.length < 100) {
+        if (response.response.length < 100) {
             allImagesShown = true;
             endElem.show(0);
         }
-        r.response.forEach(function(element) {
+        response.response.forEach(function(element) {
             if (element != null && typeof element == 'object' &&
                 "text" in element && "attachments" in element &&
                 element.text.indexOf("://vk.com/doc") != -1 &&
@@ -73,9 +73,9 @@ function addImages(response) {
     loadElem.hide(0);
 }
 
-function loadImages(onComplete, callback) {
-    if (!callback) {
-        callback = function() { return true; }
+function loadImages(onComplete, checkFunc) {
+    if (!checkFunc) {
+        checkFunc = function() { return true; }
     }
     do {
         loading = true;
@@ -89,7 +89,7 @@ function loadImages(onComplete, callback) {
             count: 100,
             offset: offset
         }, addImages);
-    } while (!callback())
+    } while (!checkFunc())
 }
 
 function auth() {
