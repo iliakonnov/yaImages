@@ -133,7 +133,7 @@ $(window).ready(function() {
     authElem.on('click', auth);
     manualLoadBtnElem.on('click', loadImages);
     var calendar = new Pikaday({
-        field: $('calendar')[0],
+        field: $('#calendar')[0],
         onSelect: function(date) {
             highlightDate(date);
         }
