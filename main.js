@@ -47,7 +47,7 @@ function loadImages() {
                     var date = new Date(element.date * 1000).toLocaleDateString();
                     var elId = 'a' + date.split('.').join('_')
                     var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
-                    var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_xxbig;
+                    var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_xxxbig;
                     var text = urlify(element.text);
                     var elem = $(
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
