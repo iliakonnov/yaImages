@@ -100,7 +100,9 @@ function highlightHash() {
 }
 
 function highlightDate(date) {
-    return highlight($('.panel-heading:contains("' + date.toLocaleDateString() + '")'));
+    return highlight(
+        $('.panel-heading:contains("' + date.toLocaleDateString() + '")').parent()
+    );
 }
 
 function highlight(elem) {
