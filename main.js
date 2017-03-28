@@ -49,6 +49,12 @@ function loadImages() {
                         var date = new Date(element.date * 1000).toLocaleDateString();
                         var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
                         var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
+                        var bigSrc;
+                        [photo.src_xxxbig, photo.src_xxbig, photo.src_xbig, photo.src_big, photo.src].forEach(function(item) {
+                            if (!bigSrc && item) {
+                                bigSrc = item;
+                            }
+                        });
                         var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_xxxbig;
                         var text = urlify(element.text);
                         var elem = $(
