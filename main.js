@@ -48,8 +48,8 @@ function loadImages() {
                     var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_big;
                     var text = urlify(element.text);
                     var elem = $(
-                        '<div class="panel panel-default imagePanel">' +
-                        '    <div class="panel-heading">' + date + '</div>' +
+                        '<div class="panel panel-default imagePanel" id="a' + date + '">' +
+                        '    <div class="panel-heading"><a href="#a' + date + '">' + date + '</a></div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
                         '        <img src="' + src + '"></img>' +
                         '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
@@ -61,6 +61,7 @@ function loadImages() {
                     }).mouseleave(function() {
                         $(this).attr('src', src)
                     });
+                    elem.find('a')[0].click(highlight);
                     elem.appendTo(mainElem);
                 }
                 offset++;
@@ -84,6 +85,21 @@ function auth() {
     });
 }
 
+function highlight() {
+    if (window.location.hash) {
+        elem = $(window.location.hash);
+        while (elem.length == 0 && loading) {
+            loadImages();
+            elem = $(window.location.hash);
+        }
+        if (elem.length != 0) {
+            elem.removeClass('panel-default').addClass('panel-primary');
+        } else {
+            $('#myModal').modal('show');
+        }
+    }
+}
+
 $(window).ready(function() {
     authElem = $('#auth');
     mainElem = $('#main');
@@ -97,6 +113,7 @@ $(window).ready(function() {
     });
     authElem.on('click', auth);
     manualLoadBtnElem.on('click', loadImages);
+    highlight();
 });
 
 $(window).scroll(function() {
