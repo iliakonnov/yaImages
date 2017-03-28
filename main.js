@@ -45,13 +45,13 @@ function loadImages() {
                     element.attachments.filter(el => el.type == "doc")
                 ) {
                     var date = new Date(element.date * 1000).toLocaleDateString();
-                    var elId = date.split('.').join('_')
+                    var elId = 'a' + date.split('.').join('_')
                     var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
                     var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_big;
                     var text = urlify(element.text);
                     var elem = $(
-                        '<div class="panel panel-default imagePanel" id="a' + elId + '">' +
-                        '    <div class="panel-heading"><button class="btn btn-default">' + date + '</a></div>' +
+                        '<div class="panel panel-default imagePanel" id="' + elId + '">' +
+                        '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
                         '        <img src="' + src + '"></img>' +
                         '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
@@ -63,7 +63,8 @@ function loadImages() {
                     }).mouseleave(function() {
                         $(this).attr('src', src)
                     });
-                    elem.find('button')[0].click(function() {
+                    elem.find('.btn').click(function(e) {
+                        e.preventDefault();
                         window.location.hash = elId;
                         highlighted = false;
                         highlight();
@@ -96,6 +97,7 @@ function highlight() {
     if (window.location.hash && !highlighted) {
         var elem = $(window.location.hash);
         if (elem.length != 0) {
+            $('.panel-default').removeClass('panel-default').addClass('panel-primary')
             elem.removeClass('panel-default').addClass('panel-primary');
             elem.get(0).scrollIntoView();
             highlighted = true;
