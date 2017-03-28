@@ -97,7 +97,7 @@ function highlight() {
     if (window.location.hash && !highlighted) {
         var elem = $(window.location.hash);
         if (elem.length != 0) {
-            $('.panel-default').removeClass('panel-default').addClass('panel-primary')
+            $('.panel-primary').removeClass('panel-default').addClass('panel-primary')
             elem.removeClass('panel-default').addClass('panel-primary');
             elem.get(0).scrollIntoView();
             highlighted = true;
