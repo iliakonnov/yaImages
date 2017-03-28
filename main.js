@@ -73,7 +73,7 @@ function addImages(response) {
     loadElem.hide(0);
 }
 
-function loadImages(onComplete, checkFunc) {
+function loadImages(checkFunc) {
     if (!checkFunc) {
         checkFunc = function() { return true; }
     }
