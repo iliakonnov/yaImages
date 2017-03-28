@@ -45,12 +45,13 @@ function loadImages() {
                     element.attachments.filter(el => el.type == "doc")
                 ) {
                     var date = new Date(element.date * 1000).toLocaleDateString();
+                    var elId = date.split('.').join('_')
                     var src = element.attachments.filter(el => el.type == "photo")[0].photo.src;
                     var bigSrc = element.attachments.filter(el => el.type == "photo")[0].photo.src_big;
                     var text = urlify(element.text);
                     var elem = $(
-                        '<div class="panel panel-default imagePanel" id="a' + date + '">' +
-                        '    <div class="panel-heading"><a href="#a' + date + '">' + date + '</a></div>' +
+                        '<div class="panel panel-default imagePanel" id="a' + elId + '">' +
+                        '    <div class="panel-heading"><a href="#a' + elId + '">' + date + '</a></div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
                         '        <img src="' + src + '"></img>' +
                         '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
