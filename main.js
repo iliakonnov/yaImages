@@ -74,6 +74,9 @@ function addImages(response) {
 }
 
 function loadImages(onComplete, callback) {
+    if (!callback) {
+        callback = function() { return true; }
+    }
     do {
         loading = true;
         loadElem.show(0);
