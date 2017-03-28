@@ -18,71 +18,75 @@ function urlify(text) {
     return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1">$1</a>');
 }
 
-function loadImages() {
-    loading = true;
-    loadElem.show(0);
-    if (errorOccured) {
-        errorOccured = false;
-        manualLoadElem.hide(0);
-    }
-    VK.Api.call('wall.get', {
-        domain: 'pictures.yandex',
-        count: 100,
-        offset: offset
-    }, function(r) {
-        if ("error" in r) {
-            $('#modalText').text('Error №' + r.error.error_code + ': ' + r.error.error_msg);
-            $('#myModal').modal('show');
-            errorOccured = true;
-            manualLoadElem.show(0);
-        } else {
-            if (r.response.length < 100) {
-                allImagesShown = true;
-                endElem.show(0);
-            }
-            r.response.forEach(function(element) {
-                if (element != null && typeof element == 'object' &&
-                    "text" in element && "attachments" in element &&
-                    element.text.indexOf("://vk.com/doc") != -1 &&
-                    element.attachments.filter(el => el.type == "doc")
-                ) {
-                    var date = new Date(element.date * 1000).toLocaleDateString();
-                    var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
-
-                    var photo = element.attachments.filter(el => el.type == "photo")[0].photo;
-                    var src = photo.src;
-                    var bigSrc;
-                    [photo.src_xxxbig, photo.src_xxbig, photo.src_xbig, photo.src_big, photo.src].forEach(function(item) {
-                        if (!bigSrc && item) {
-                            bigSrc = item;
-                        }
-                    });
-
-                    var text = urlify(element.text);
-                    var elem = $(
-                        '<div class="panel panel-default imagePanel" id="' + elId + '">' +
-                        '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
-                        '    <div class="panel-body"><div class="thumbnail">' +
-                        '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
-                        '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
-                        '    </div></div>' +
-                        '</div>'
-                    );
-                    Intense(elem.find('img')[0]);
-                    elem.find('.btn').click(function(e) {
-                        e.preventDefault();
-                        window.location.hash = elId;
-                        highlighted = false;
-                        highlightHash();
-                    });
-                    elem.appendTo(mainElem);
-                }
-                offset++;
-            });
+function addImages(response) {
+    if ("error" in r) {
+        $('#modalText').text('Error №' + r.error.error_code + ': ' + r.error.error_msg);
+        $('#myModal').modal('show');
+        errorOccured = true;
+        manualLoadElem.show(0);
+    } else {
+        if (r.response.length < 100) {
+            allImagesShown = true;
+            endElem.show(0);
         }
-        loading = false;
-        loadElem.hide(0);
-    });
+        r.response.forEach(function(element) {
+            if (element != null && typeof element == 'object' &&
+                "text" in element && "attachments" in element &&
+                element.text.indexOf("://vk.com/doc") != -1 &&
+                element.attachments.filter(el => el.type == "doc")
+            ) {
+                var date = new Date(element.date * 1000).toLocaleDateString();
+                var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
+
+                var photo = element.attachments.filter(el => el.type == "photo")[0].photo;
+                var src = photo.src;
+                var bigSrc;
+                [photo.src_xxxbig, photo.src_xxbig, photo.src_xbig, photo.src_big, photo.src].forEach(function(item) {
+                    if (!bigSrc && item) {
+                        bigSrc = item;
+                    }
+                });
+
+                var text = urlify(element.text);
+                var elem = $(
+                    '<div class="panel panel-default imagePanel" id="' + elId + '">' +
+                    '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
+                    '    <div class="panel-body"><div class="thumbnail">' +
+                    '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
+                    '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
+                    '    </div></div>' +
+                    '</div>'
+                );
+                Intense(elem.find('img')[0]);
+                elem.find('.btn').click(function(e) {
+                    e.preventDefault();
+                    window.location.hash = elId;
+                    highlighted = false;
+                    highlightHash();
+                });
+                elem.appendTo(mainElem);
+            }
+            offset++;
+        });
+    }
+    loading = false;
+    loadElem.hide(0);
+}
+
+function loadImages(onComplete, callback) {
+    do {
+        loading = true;
+        loadElem.show(0);
+        if (errorOccured) {
+            errorOccured = false;
+            manualLoadElem.hide(0);
+        }
+        VK.Api.call('wall.get', {
+            domain: 'pictures.yandex',
+            count: 100,
+            offset: offset
+        }, addImages);
+    } while (!callback)
 }
 
 function auth() {
@@ -101,18 +105,20 @@ function auth() {
 
 function highlightHash() {
     if (window.location.hash && !highlighted) {
-        var elem = $(window.location.hash)
-        while (!highlight(elem))
-            loadImages();
-        highlighted = true;
+        loadImages(function() {
+            var result = highlight($(window.location.hash));
+            if (result) highlighted = true;
+            return result
+        });
     }
 }
 
 function highlightDate(date) {
-    while (!highlight(
+    loadImages(function() {
+        return highlight(
             $('.panel-heading:contains("' + date.toLocaleDateString() + '")').parent()
-        ))
-        loadImages();
+        );
+    });
 }
 
 function highlight(elem) {
