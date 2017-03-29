@@ -33,13 +33,13 @@ function addImagesCallback(checkFunc, recursion) {
                 loadAllBtnElem.prop('disbled', true);
             }
             response.response.forEach(function(element) {
-                var docs = element.attachments.filter(el => el.type == "doc");
                 if (element != null && typeof element == 'object' &&
                     "text" in element && "attachments" in element &&
                     element.text.indexOf("://vk.com/doc") != -1 &&
-                    docs.length != 0
+                    element.attachments.filter(el => el.type == "doc")
                 ) {
                     var vkLink = "https://vk.com/pictures.yandex?w=wall" + element.to_id + '_' + element.id;
+                    var docUrl = element.attachments.filter(el => el.type == "doc")[0].url;
                     var date = new Date(element.date * 1000).toLocaleDateString();
                     var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
 
@@ -57,7 +57,7 @@ function addImagesCallback(checkFunc, recursion) {
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
                         '    <div class="panel-heading">' +
                         '        <a href="#' + eliId + '" class="btn btn-default dateBtn">' + date + '</a>' +
-                        '        <a href="' + docs[0].url + '" class="btn btn-default downloadBtn">Download</a>' +
+                        '        <a href="' + docUrl + '" class="btn btn-default downloadBtn">Download</a>' +
                         '        <a href="' + vkLink + '" class="btn btn-default vkLink">VK</a>' +
                         '    </div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
