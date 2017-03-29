@@ -39,7 +39,7 @@ function addImagesCallback(checkFunc, recursion) {
                     "text" in element && "attachments" in element &&
                     element.text.indexOf("://vk.com/doc") != -1
                 ) {
-                    var vkLink = "https://vk.com/pictures.yandex?w=wall" + element.to_id + '_' + element.id;
+                    var vkLink = "https://vk.com/wall" + element.to_id + '_' + element.id;
                     var date = new Date(element.date * 1000).toLocaleDateString();
                     var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
                     docs[element.text.match(/doc(-?[0-9]+_-?[0-9]+)/i)[1]] = elId;
@@ -57,12 +57,13 @@ function addImagesCallback(checkFunc, recursion) {
                     var elem = $(
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
                         '    <div class="panel-heading">' +
-                        '        <a href="#' + elId + '" class="btn btn-default dateBtn">' + date + '</a>' +
                         /*
-                        '        <a class="btn btn-default downloadLink">Download</a>' +
+                        '        <a href="#' + elId + '" class="btn btn-default dateBtn" data-toggle="tooltip" title="Link to this image">' + date + '</a>' +
+                        '        <a class="btn btn-default downloadLink" data-toggle="tooltip" title="Direct link to fullsize image">Download</a>' +
                         '        <a href="' + vkLink + '" class="btn btn-default vkLink">Open in VK</a>' +
                         */
-                        '        <a class="btn btn-default downloadLink">Скачать</a>' +
+                        '        <a href="#' + elId + '" class="btn btn-default dateBtn" data-toggle="tooltip" title="Ссылка на эту картинку">' + date + '</a>' +
+                        '        <a class="btn btn-default downloadLink" data-toggle="tooltip" title="Прямая ссылка на изображение в полном размере">Скачать</a>' +
                         '        <a href="' + vkLink + '" class="btn btn-default vkLink">Открыть в группе</a>' +
                         '    </div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
