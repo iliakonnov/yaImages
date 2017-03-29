@@ -73,14 +73,6 @@ function addImagesCallback(checkFunc, recursion) {
                         highlighted = false;
                         highlightHash();
                     });
-                    /*elem.find('.downloadBtn').click(function(e) {
-                        VK.Api.call('docs.getById', {
-                            docs: element.text.match(/doc([0-9]+_[0-9]+)/i)[1]
-                        }, function(r) {
-                            $('#modalText').html('<a href="' + r.url + '">Download</a>');
-                            $('#myModal').modal('show');
-                        });
-                    });*/
                     elem.appendTo(mainElem);
                 }
                 offset++;
