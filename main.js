@@ -159,6 +159,7 @@ $(window).ready(function() {
     manualLoadBtnElem = $('#manualLoadBtn');
     loadAllBtnElem = $('#loadAll');
     goTopBtnElem = $('#goTop')
+    $('#leftMenu').affix();
 
     VK.init({
         apiId: 5947241
