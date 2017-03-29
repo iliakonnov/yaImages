@@ -87,7 +87,7 @@ function addImagesCallback(checkFunc, recursion) {
 }
 
 function loadImages(checkFunc, recursion = 1) {
-    if (!typeof checkFunc == "function")
+    if (typeof checkFunc != "function")
         checkFunc = function() { return true; }
     loading = true;
     loadElem.show(0);
