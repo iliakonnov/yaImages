@@ -6,6 +6,7 @@ var authElem;
 var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
+var loadAllBtnElem;
 var calendar;
 var loading = false;
 var errorOccured = false;
@@ -105,6 +106,9 @@ function auth() {
         if (result.status == "connected") {
             authorized = true;
             authElem.hide();
+            manualLoadBtnElem.prop('disabled', false);
+            loadAllBtnElem.prop('disabled', false);
+            calendar.prop('disabled', false);
             loadImages();
             highlightHash();
         } else {
@@ -149,34 +153,14 @@ function highlight(elem) {
 }
 
 $(window).ready(function() {
-    authElem = $('#auth');
+    authElem = $('#auth').on('click', auth);
     mainElem = $('#main');
     loadElem = $('#loader').hide(0);
     endElem = $('#end').hide(0);
     manualLoadElem = $('#manualLoadBtn').hide(0);
-    manualLoadBtnElem = $('#manualLoadBtn');
-    $('#leftMenu').affix({
-        offset: 0
-    });
-    $('#leftMenu').on('affix.bs.affix', function() {
-        if (!$(window).scrollTop()) return false;
-    });
-    $('#leftMenu').width($('#leftMenu').parent().width())
-
-    VK.init({
-        apiId: 5947241
-    });
-    authElem.on('click', auth);
-    manualLoadBtnElem.on('click', loadImages);
-    var calendar = new Pikaday({
-        field: $('#calendar')[0],
-        onSelect: function(date) {
-            highlightDate(date);
-        }
-    });
-
-    $('#loadAll').on('click', function() {
-        loadImage(function() {
+    manualLoadBtnElem = $('#manualLoadBtn').on('click', loadImages).prop('disabled', true);
+    loadAllBtnElem = $('#loadAll').on('click', function() {
+        loadImages(function() {
             if (allImagesShown) {
                 $('html, body').animate({
                     scrollTop: document.body.scrollHeight
@@ -184,13 +168,31 @@ $(window).ready(function() {
                 return true;
             } else return false;
         });
+    }).prop('disabled', true);;
+
+    $('#leftMenu').affix({
+        offset: 0
+    }).on('affix.bs.affix', function() {
+        if (!$(window).scrollTop()) return false;
+    }).width($('#leftMenu').parent().width());
+
+    VK.init({
+        apiId: 5947241
     });
+    var calendar = new Pikaday({
+        field: $('#calendar').prop('disabled', true)[0],
+        onSelect: function(date) {
+            highlightDate(date);
+        }
+    });
+
     var elevator = new Elevator({
         element: $('#goTop')[0],
         mainAudio: './external/elevator/elevator.mp3',
         endAudio: './external/elevator/ding.mp3',
         startCallback: function() { $('#goTop').prop('disabled', true); },
-        endCallback: function() { $('#goTop').prop('disabled', true); }
+        endCallback: function() { $('#goTop').prop('disabled', false); },
+        duration: 5000
     });
 });
 
