@@ -22,7 +22,8 @@ function urlify(text) {
 function addImagesCallback(checkFunc, recursion) {
     return function(response) {
         if ("error" in response) {
-            $('#modalText').text('Error №' + response.error.error_code + ': ' + response.error.error_msg);
+            // $('#modalText').text('Error #' + response.error.error_code + ': ' + response.error.error_msg);
+            $('#modalText').text('Ошибка №' + response.error.error_code + ': ' + response.error.error_msg);
             $('#myModal').modal('show');
             errorOccured = true;
             manualLoadElem.show(0);
@@ -57,8 +58,12 @@ function addImagesCallback(checkFunc, recursion) {
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
                         '    <div class="panel-heading">' +
                         '        <a href="#' + elId + '" class="btn btn-default dateBtn">' + date + '</a>' +
+                        /*
                         '        <a class="btn btn-default downloadLink">Download</a>' +
-                        '        <a href="' + vkLink + '" class="btn btn-default vkLink">VK</a>' +
+                        '        <a href="' + vkLink + '" class="btn btn-default vkLink">Open in VK</a>' +
+                        */
+                        '        <a class="btn btn-default downloadLink">Скачать</a>' +
+                        '        <a href="' + vkLink + '" class="btn btn-default vkLink">Открыть в группе</a>' +
                         '    </div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
                         '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
@@ -89,7 +94,8 @@ function addImagesCallback(checkFunc, recursion) {
             if (recursion < 250) {
                 loadImages(checkFunc, recursion + 1);
             } else {
-                $('#modalText').text('Max recursion depth reached. Try again');
+                // $('#modalText').text('Max recursion depth reached. Try again');
+                $('#modalText').text('Достигнута максимальная глубина рекурсии. Попробуйте ещё раз.');
                 $('#myModal').modal('show');
             }
         }
