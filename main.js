@@ -94,7 +94,7 @@ function loadImages(checkFunc = function() { return true; }, recursion = 1) {
         domain: 'pictures.yandex',
         count: 100,
         offset: offset
-    }, addImages);
+    }, addImagesCallback(checkFunc, recursion));
 }
 
 function auth() {
@@ -103,6 +103,7 @@ function auth() {
             authorized = true;
             authElem.hide();
             loadImages();
+            highlightHash();
         } else {
             $('#modalText').text('Auth error');
             $('#myModal').modal('show');
