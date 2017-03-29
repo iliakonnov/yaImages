@@ -33,11 +33,13 @@ function addImagesCallback(checkFunc, recursion) {
                 loadAllBtnElem.prop('disbled', true);
             }
             response.response.forEach(function(element) {
+                var docs = element.attachments.filter(el => el.type == "doc");
                 if (element != null && typeof element == 'object' &&
                     "text" in element && "attachments" in element &&
                     element.text.indexOf("://vk.com/doc") != -1 &&
-                    element.attachments.filter(el => el.type == "doc")
+                    docs.length != 0
                 ) {
+                    var vkLink = "https://vk.com/pictures.yandex?w=wall" + element.to_id + '_' + element.id;
                     var date = new Date(element.date * 1000).toLocaleDateString();
                     var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
 
@@ -53,7 +55,11 @@ function addImagesCallback(checkFunc, recursion) {
                     var text = urlify(element.text);
                     var elem = $(
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
-                        '    <div class="panel-heading"><a class="btn btn-default">' + date + '</a></div>' +
+                        '    <div class="panel-heading">' +
+                        '        <a href="#' + eliId + '" class="btn btn-default dateBtn">' + date + '</a>' +
+                        '        <a href="' + docs[0].url + '" class="btn btn-default downloadBtn">Download</a>' +
+                        '        <a href="' + vkLink + '" class="btn btn-default vkLink">VK</a>' +
+                        '    </div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
                         '        <img class="img-thumbnail image" src="' + src + '" data-image="' + bigSrc + '"></img>' +
                         '        <div class="caption imageCaption"><p>' + text + '</p></div>' +
@@ -61,7 +67,7 @@ function addImagesCallback(checkFunc, recursion) {
                         '</div>'
                     );
                     Intense(elem.find('img')[0]);
-                    elem.find('.btn').click(function(e) {
+                    elem.find('.dateBtn').click(function(e) {
                         e.preventDefault();
                         window.location.hash = elId;
                         highlighted = false;
