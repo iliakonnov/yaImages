@@ -73,6 +73,7 @@ function addImagesCallback(checkFunc, recursion) {
                         '</div>'
                     );
                     Intense(elem.find('img')[0]);
+                    elem.find('[data-toggle="tooltip"]').tooltip();
                     elem.find('.dateBtn').click(function(e) {
                         e.preventDefault();
                         window.location.hash = elId;
@@ -216,6 +217,7 @@ $(window).ready(function() {
         endCallback: function() { $('#goTop').prop('disabled', false); },
         duration: 5000
     });
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 $(window).scroll(function() {
