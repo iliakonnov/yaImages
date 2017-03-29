@@ -6,6 +6,8 @@ var authElem;
 var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
+var loadAllElem;
+var loadAllBtnElem;
 var calendar;
 var loading = false;
 var errorOccured = false;
@@ -150,8 +152,9 @@ $(window).ready(function() {
     mainElem = $('#main');
     loadElem = $('#loader').hide(0);
     endElem = $('#end').hide(0);
-    manualLoadElem = $('#manualLoad').hide(0);
     manualLoadBtnElem = $('#manualLoadBtn');
+    loadAllElem = $('#loadAll').hide(0);
+    loadAllBtnElem = $('#loadAllBtn');
 
     VK.init({
         apiId: 5947241
@@ -164,12 +167,23 @@ $(window).ready(function() {
             highlightDate(date);
         }
     });
+    loadAllBtnElem.on('click', function() {
+
+    });
 });
 
 $(window).scroll(function() {
     if (!allImagesShown && authorized && !errorOccured && !loading &&
         $(window).scrollTop() + $(window).height() == $(document).height() // Bottom
     ) {
-        loadImages();
+        loadImages(function() {
+            if (allImagesShown) {
+                $('html, body').animate({
+                    scrollTop: document.body.scrollHeight
+                }, 'slow');
+                loadAllBtnElem.prop('enabled', false);
+                return true;
+            } else return false;
+        });
     }
 });
