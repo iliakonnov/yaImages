@@ -7,7 +7,7 @@ var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
 var loadAllBtnElem;
-var calendar;
+var calendarElem;
 var loading = false;
 var errorOccured = false;
 var allImagesShown = false;
@@ -159,6 +159,7 @@ $(window).ready(function() {
     endElem = $('#end').hide(0);
     manualLoadElem = $('#manualLoadBtn').hide(0);
     manualLoadBtnElem = $('#manualLoadBtn').on('click', loadImages).prop('disabled', true);
+    calendarElem = $('#calendar').prop('disabled', true);
     loadAllBtnElem = $('#loadAll').on('click', function() {
         loadImages(function() {
             if (allImagesShown) {
@@ -180,7 +181,7 @@ $(window).ready(function() {
         apiId: 5947241
     });
     var calendar = new Pikaday({
-        field: $('#calendar').prop('disabled', true)[0],
+        field: calendarElem[0],
         onSelect: function(date) {
             highlightDate(date);
         }
