@@ -41,7 +41,7 @@ function addImagesCallback(checkFunc, recursion) {
                     var vkLink = "https://vk.com/pictures.yandex?w=wall" + element.to_id + '_' + element.id;
                     var date = new Date(element.date * 1000).toLocaleDateString();
                     var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
-                    docs[element.text.match(/doc([0-9]+_[0-9]+)/i)[1]] = elId;
+                    docs[element.text.match(/doc(-?[0-9]+_-?[0-9]+)/i)[1]] = elId;
 
                     var photo = element.attachments.filter(el => el.type == "photo")[0].photo;
                     var src = photo.src;
@@ -109,6 +109,7 @@ function addImagesCallback(checkFunc, recursion) {
 function loadImages(checkFunc, recursion = 1) {
     if (typeof checkFunc != "function")
         checkFunc = function() { return true; }
+    else if (checkFunc()) return;
     loading = true;
     loadElem.show(0);
     if (errorOccured) {
