@@ -162,8 +162,9 @@ $(window).ready(function() {
     $('#leftMenu').affix({
         offset: 0
     });
-    $('#forkMe').affix({
-        offset: 0
+    $('#leftMenu').width($('#leftMenu').parent().width())
+    $('#leftMenu').on('affix.bs.affix', function() {
+        if (!$(window).scrollTop()) return false;
     });
 
     VK.init({
