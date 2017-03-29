@@ -85,7 +85,9 @@ function addImagesCallback(checkFunc, recursion) {
     }
 }
 
-function loadImages(checkFunc = function() { return true; }, recursion = 1) {
+function loadImages(checkFunc, recursion = 1) {
+    if (!typeof checkFunc == "function")
+        checkFunc = function() { return true; }
     loading = true;
     loadElem.show(0);
     if (errorOccured) {
@@ -152,8 +154,8 @@ $(window).ready(function() {
     mainElem = $('#main');
     loadElem = $('#loader').hide(0);
     endElem = $('#end').hide(0);
+    manualLoadElem = $('#manualLoadBtn').hide(0);
     manualLoadBtnElem = $('#manualLoadBtn');
-    loadAllElem = $('#loadAll').hide(0);
     loadAllBtnElem = $('#loadAllBtn');
 
     VK.init({
