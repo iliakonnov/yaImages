@@ -108,7 +108,7 @@ function auth() {
             authElem.hide();
             manualLoadBtnElem.prop('disabled', false);
             loadAllBtnElem.prop('disabled', false);
-            calendar.prop('disabled', false);
+            calendarElem.prop('disabled', false);
             loadImages();
             highlightHash();
         } else {
