@@ -6,8 +6,6 @@ var authElem;
 var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
-var goTopBtnElem;
-var loadAllBtnElem;
 var calendar;
 var loading = false;
 var errorOccured = false;
@@ -31,7 +29,7 @@ function addImagesCallback(checkFunc, recursion) {
             if (response.response.length < 100) {
                 allImagesShown = true;
                 endElem.show(0);
-                loadAllBtnElem.prop('enabled', false);
+                loadAllBtnElem.prop('disbled', true);
             }
             response.response.forEach(function(element) {
                 if (element != null && typeof element == 'object' &&
@@ -157,8 +155,6 @@ $(window).ready(function() {
     endElem = $('#end').hide(0);
     manualLoadElem = $('#manualLoadBtn').hide(0);
     manualLoadBtnElem = $('#manualLoadBtn');
-    loadAllBtnElem = $('#loadAll');
-    goTopBtnElem = $('#goTop')
     $('#leftMenu').affix({
         offset: 0
     });
@@ -179,13 +175,22 @@ $(window).ready(function() {
         }
     });
 
-    loadAllBtnElem.on('click', function() {
-        if (allImagesShown) {
-            $('html, body').animate({
-                scrollTop: document.body.scrollHeight
-            }, 'slow');
-            return true;
-        } else return false;
+    $('#loadAll').on('click', function() {
+        loadImage(function() {
+            if (allImagesShown) {
+                $('html, body').animate({
+                    scrollTop: document.body.scrollHeight
+                }, 'slow');
+                return true;
+            } else return false;
+        });
+    });
+    var elevator = new Elevator({
+        element: $('#goTop')[0],
+        mainAudio: './external/elevator/elevator.mp3',
+        endAudio: './external/elevator/ding.mp3',
+        startCallback: function() { $('#goTop').prop('disabled', true); },
+        endCallback: function() { $('#goTop').prop('disabled', true); }
     });
 });
 
