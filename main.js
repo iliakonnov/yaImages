@@ -35,8 +35,7 @@ function addImagesCallback(checkFunc, recursion) {
             response.response.forEach(function(element) {
                 if (element != null && typeof element == 'object' &&
                     "text" in element && "attachments" in element &&
-                    element.text.indexOf("://vk.com/doc") != -1 &&
-                    element.attachments.filter(el => el.type == "doc")
+                    element.text.indexOf("://vk.com/doc") != -1
                 ) {
                     var vkLink = "https://vk.com/pictures.yandex?w=wall" + element.to_id + '_' + element.id;
                     var docUrl = element.attachments.filter(el => el.type == "doc")[0].url;
@@ -57,7 +56,7 @@ function addImagesCallback(checkFunc, recursion) {
                         '<div class="panel panel-default imagePanel" id="' + elId + '">' +
                         '    <div class="panel-heading">' +
                         '        <a href="#' + eliId + '" class="btn btn-default dateBtn">' + date + '</a>' +
-                        '        <a href="' + docUrl + '" class="btn btn-default downloadBtn">Download</a>' +
+                        '        <button class="btn btn-default downloadBtn">Download</button>' +
                         '        <a href="' + vkLink + '" class="btn btn-default vkLink">VK</a>' +
                         '    </div>' +
                         '    <div class="panel-body"><div class="thumbnail">' +
@@ -72,6 +71,14 @@ function addImagesCallback(checkFunc, recursion) {
                         window.location.hash = elId;
                         highlighted = false;
                         highlightHash();
+                    });
+                    elem.find('.downloadBtn').click(function(e) {
+                        VK.Api.call('getById', {
+                            docs: element.text.match(/doc([0-9]+_[0-9]+)/i)[1]
+                        }, function(r) {
+                            $('#modalText').html('<a href="' + r.url + '">Download</a>');
+                            $('#myModal').modal('show');
+                        });
                     });
                     elem.appendTo(mainElem);
                 }
