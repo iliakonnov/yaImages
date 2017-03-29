@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.5.1/css/pikaday.min.css" integrity="sha256-v12lcgVxmB0DXa93NoOWSE4yKhSj9Bei8Tbx5f6ozho=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crc-32/1.0.1/crc32.min.js" integrity="sha256-2ZcBmKWA73mUmz44ph2dncOF9muwjmVoJD2EnZG5ouU=" crossorigin="anonymous"></script>
     <script src="https://vk.com/js/api/openapi.js?142" type="text/javascript"></script>
-    <script src="./intense.min.js" type="text/javascript"></script>
+    <script src="./external/intense/intense.min.js" type="text/javascript"></script>
+    <script src="./external/elevator/elevator.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="./css.css">
     <script src="./main.js"></script>
 </head>
@@ -32,12 +33,21 @@
                 </div>
             </div>
             <nav class="col-sm-3 dateSearch">
-                <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="15">
+                <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="0">
                     <li>
                         <input readonly="readonly" type="text" class="form-control" placeholder="Date" id="calendar" aria-label="Use the arrow keys to pick a date">
                     </li>
                     <li>
-                        <button class="btn" id="loadAllBtn">Load all</button>
+                        <button class="btn" id="goTop">Go top</button>
+                    </li>
+                    <li>
+                        <button class="btn" id="loadAll">Load all</button>
+                    </li>
+                    <li>
+                        <footer>
+                            Thanks <a href="https://github.com/tholman">Tim Holman</a> for <a href="https://github.com/tholman/intense-images">intense images</a> and <a href="https://github.com/tholman/elevator.js">elevator.js</a>. Both is covered by
+                            the MIT License.
+                        </footer>
                     </li>
                 </ul>
             </nav>

@@ -6,7 +6,7 @@ var authElem;
 var mainElem;
 var manualLoadElem;
 var manualLoadBtnElem;
-var loadAllElem;
+var goTopBtnElem;
 var loadAllBtnElem;
 var calendar;
 var loading = false;
@@ -31,6 +31,7 @@ function addImagesCallback(checkFunc, recursion) {
             if (response.response.length < 100) {
                 allImagesShown = true;
                 endElem.show(0);
+                loadAllBtnElem.prop('enabled', false);
             }
             response.response.forEach(function(element) {
                 if (element != null && typeof element == 'object' &&
@@ -156,7 +157,8 @@ $(window).ready(function() {
     endElem = $('#end').hide(0);
     manualLoadElem = $('#manualLoadBtn').hide(0);
     manualLoadBtnElem = $('#manualLoadBtn');
-    loadAllBtnElem = $('#loadAllBtn');
+    loadAllBtnElem = $('#loadAll');
+    goTopBtnElem = $('#goTop')
 
     VK.init({
         apiId: 5947241
@@ -169,8 +171,14 @@ $(window).ready(function() {
             highlightDate(date);
         }
     });
-    loadAllBtnElem.on('click', function() {
 
+    loadAllBtnElem.on('click', function() {
+        if (allImagesShown) {
+            $('html, body').animate({
+                scrollTop: document.body.scrollHeight
+            }, 'slow');
+            return true;
+        } else return false;
     });
 });
 
@@ -178,14 +186,6 @@ $(window).scroll(function() {
     if (!allImagesShown && authorized && !errorOccured && !loading &&
         $(window).scrollTop() + $(window).height() == $(document).height() // Bottom
     ) {
-        loadImages(function() {
-            if (allImagesShown) {
-                $('html, body').animate({
-                    scrollTop: document.body.scrollHeight
-                }, 'slow');
-                loadAllBtnElem.prop('enabled', false);
-                return true;
-            } else return false;
-        });
+        loadImages();
     }
 });
