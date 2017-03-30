@@ -166,7 +166,6 @@ function highlight(elem) {
         $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
         elem.removeClass('panel-default').addClass('panel-primary');
         $("html, body").animate({ scrollTop: elem.offset().top - 100 }, 1000);
-        elem[0].scrollIntoView();
         return true;
     } else if (allImagesShown) {
         $('#modalText').text('Image not found');
@@ -190,8 +189,10 @@ $(window).ready(function() {
         loadImages(function() {
             if (allImagesShown) {
                 $('html, body').animate({
-                    scrollTop: document.body.scrollHeight
-                }, 'slow');
+                        scrollTop: $(document).height() - $(window).height()
+                    },
+                    1400
+                );
                 return true;
             } else return false;
         });
