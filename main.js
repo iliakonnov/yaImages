@@ -8,6 +8,7 @@ var manualLoadElem;
 var manualLoadBtnElem;
 var loadAllBtnElem;
 var calendarElem;
+var calendarBtnElem;
 var loading = false;
 var errorOccured = false;
 var allImagesShown = false;
@@ -127,7 +128,7 @@ function auth() {
     VK.Auth.login(function(result) {
         if (result.status == "connected") {
             authorized = true;
-            authElem.hide();
+            authElem.prop('disabled', true);
             manualLoadBtnElem.prop('disabled', false);
             loadAllBtnElem.prop('disabled', false);
             calendarElem.prop('disabled', false);
@@ -182,6 +183,7 @@ $(window).ready(function() {
     manualLoadElem = $('#manualLoadBtn').hide(0);
     manualLoadBtnElem = $('#manualLoadBtn').on('click', loadImages).prop('disabled', true);
     calendarElem = $('#calendar').prop('disabled', true);
+    calendarBtnElem = $('#calendarBtn').prop('disabled', true);
     loadAllBtnElem = $('#loadAll').on('click', function() {
         loadImages(function() {
             if (allImagesShown) {
@@ -204,6 +206,7 @@ $(window).ready(function() {
     });
     var calendar = new Pikaday({
         field: calendarElem[0],
+        trigger: calendarBtnElem[0],
         onSelect: function(date) {
             highlightDate(date);
         }
