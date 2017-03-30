@@ -53,7 +53,7 @@ function addImagesCallback(checkFunc, recursion) {
                     var vkLink = "https://vk.com/wall" + element.to_id + '_' + element.id;
                     var date = new Date(element.date * 1000).toLocaleDateString();
                     var elId = 'a' + date.split('.').join('_') + '-' + CRC32.str(element.text).toString(36).replace('-', '_');
-                    docs[element.text.match(/doc(-?[0-9]+_-?[0-9]+)/i)[1]] = elId;
+                    docs[element.text.match(/doc(-?[0-9]+_-?[0-9]+)/i)[1]] = 'id' + elId;
 
                     var photo = element.attachments.filter(el => el.type == "photo")[0].photo;
                     var src = photo.src;
@@ -66,7 +66,7 @@ function addImagesCallback(checkFunc, recursion) {
 
                     var text = urlify(element.text);
                     var elem = $(
-                        '<div class="panel panel-default imagePanel" id="' + elId + '">' +
+                        '<div class="panel panel-default imagePanel" id="id' + elId + '">' +
                         '    <div class="panel-heading">' +
                         /*
                         '        <a href="#' + elId + '" class="btn btn-default dateBtn" data-toggle="tooltip" title="Link to this image">' + date + '</a>' +
@@ -156,7 +156,7 @@ function auth() {
 function highlightHash() {
     if (window.location.hash && !highlighted) {
         loadImages(function() {
-            var result = highlight($(window.location.hash));
+            var result = highlight($('#id' + window.location.hash.replace('#', '')));
             if (result) highlighted = true;
             return result
         });
