@@ -20,6 +20,16 @@ function urlify(text) {
     return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1">$1</a>');
 }
 
+function isElementInViewport(el) {
+    var rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 50 && // Navbar
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    );
+}
+
 function addImagesCallback(checkFunc, recursion) {
     return function(response) {
         if ("error" in response) {
@@ -165,7 +175,9 @@ function highlight(elem) {
     if (elem.length != 0) {
         $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
         elem.removeClass('panel-default').addClass('panel-primary');
-        $("html, body").animate({ scrollTop: elem.offset().top - 100 }, 1000);
+        if (!isElementInViewport(elem[0])) {
+            $("html, body").animate({ scrollTop: elem.offset().top - 100 }, 1000);
+        }
         return true;
     } else if (allImagesShown) {
         $('#modalText').text('Image not found');
