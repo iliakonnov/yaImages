@@ -147,6 +147,7 @@ function auth() {
             authElem.prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 
             $('#help').hide(0);
+            downloadAllBtn.prop('disabled', false)
             manualLoadBtnElem.prop('disabled', false);
             loadAllBtnElem.prop('disabled', false);
             calendarElem.prop('disabled', false);
@@ -197,30 +198,44 @@ function highlight(elem) {
 }
 
 function downloadAll() {
-    downloadAllStart.on('click', function() {
+    downloadModalStart.on('click', function() {
         downloadModalCancel.prop('disabled', true);
         downloadModalStart.prop('disabled', true);
         // downloadModalText.text('Loading...');
         downloadModalText.text('Загрузка...');
         $('.imagePanel').each(function(index, elem) {
+            elem = $(elem);
             var url = elem.find('.downloadLink').prop('href');
             var dateBtn = elem.find('.dateBtn')
             var date = dateBtn.text();
             var id = dateBtn.prop('href');
             if (url) {
-                var elem = $('<p><a href="' + url + '">' + date + '</a></p>: OK');
-                elem.find('a').click();
-                elem.appendTo(downloadModalBody);
+                $.ajax({
+                    async: false,
+                    url: url, // my URL
+                    type: "GET",
+                    dataType: 'binary',
+                    success: function(result) {
+                        var elem = $(
+                            '<a href="' + URL.createObjectURL(result) +
+                            ' download="' + date + '.jpg" target="_blank"">' + date + '</a><br/>: OK'
+                        ).appendTo(downloadModalBody)[0].click();
+                    },
+                    error: function(result) {
+                        var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Error');
+                        elem.appendTo(downloadModalBody);
+                    }
+                });
             } else {
-                var elem = $('<p><a href="' + id + '">' + date + '</a></p>: Error');
+                var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Error');
                 elem.appendTo(downloadModalBody);
             }
-        })
+        });
         $('<p>Done!</p>').appendTo(downloadModalBody);
         downloadModalCancel.prop('disabled', false);
         downloadModalStart.prop('disabled', false);
     });
-    downloadModal.show(0);
+    downloadModal.modal('show');
 }
 
 $(window).ready(function() {
@@ -230,6 +245,7 @@ $(window).ready(function() {
     downloadModalCancel = $('#downloadModalCancel');
     downloadModalStart = $('#downloadModalStart');
     downloadAllBtn = $('#downloadAll').on('click', downloadAll).prop('disabled', true);
+    downloadAllBtn.hide(0); // Because downloadAll not working
     authElem = $('#auth').on('click', auth);
     mainElem = $('#main');
     loadElem = $('#loader').hide(0);
