@@ -195,12 +195,6 @@ $(window).ready(function() {
         });
     }).prop('disabled', true);;
 
-    $('#leftMenu').affix({
-        offset: 0
-    }).on('affix.bs.affix', function() {
-        if (!$(window).scrollTop()) return false;
-    }).width($('#leftMenu').parent().width());
-
     VK.init({
         apiId: 5947241
     });
