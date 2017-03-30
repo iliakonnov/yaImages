@@ -4,11 +4,17 @@ var endElem;
 var loadElem;
 var authElem;
 var mainElem;
+var downloadModal;
+var downloadModalText;
+var downloadModalBody;
+var downloadModalCancel;
+var downloadModalStart;
 var manualLoadElem;
 var manualLoadBtnElem;
 var loadAllBtnElem;
 var calendarElem;
 var calendarBtnElem;
+var downloadAllBtn;
 var loading = false;
 var errorOccured = false;
 var allImagesShown = false;
@@ -138,7 +144,9 @@ function auth() {
     VK.Auth.login(function(result) {
         if (result.status == "connected") {
             authorized = true;
-            authElem.prop('disabled', true);
+            authElem.prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+
+            $('#help').hide(0);
             manualLoadBtnElem.prop('disabled', false);
             loadAllBtnElem.prop('disabled', false);
             calendarElem.prop('disabled', false);
@@ -188,7 +196,40 @@ function highlight(elem) {
     }
 }
 
+function downloadAll() {
+    downloadAllStart.on('click', function() {
+        downloadModalCancel.prop('disabled', true);
+        downloadModalStart.prop('disabled', true);
+        // downloadModalText.text('Loading...');
+        downloadModalText.text('Загрузка...');
+        $('.imagePanel').each(function(index, elem) {
+            var url = elem.find('.downloadLink').prop('href');
+            var dateBtn = elem.find('.dateBtn')
+            var date = dateBtn.text();
+            var id = dateBtn.prop('href');
+            if (url) {
+                var elem = $('<p><a href="' + url + '">' + date + '</a></p>: OK');
+                elem.find('a').click();
+                elem.appendTo(downloadModalBody);
+            } else {
+                var elem = $('<p><a href="' + id + '">' + date + '</a></p>: Error');
+                elem.appendTo(downloadModalBody);
+            }
+        })
+        $('<p>Done!</p>').appendTo(downloadModalBody);
+        downloadModalCancel.prop('disabled', false);
+        downloadModalStart.prop('disabled', false);
+    });
+    downloadModal.show(0);
+}
+
 $(window).ready(function() {
+    downloadModal = $('#downloadModal').hide(0);
+    downloadModalText = $('#downloadModalText');
+    downloadModalBody = $('#downloadModalBody');
+    downloadModalCancel = $('#downloadModalCancel');
+    downloadModalStart = $('#downloadModalStart');
+    downloadAllBtn = $('#downloadAll').on('click', downloadAll).prop('disabled', true);
     authElem = $('#auth').on('click', auth);
     mainElem = $('#main');
     loadElem = $('#loader').hide(0);

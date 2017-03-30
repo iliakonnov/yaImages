@@ -49,6 +49,12 @@
                     </li>
                     <li>
                         <p class="navbar-btn">
+                            <!--<button class="btn btn-default" id="downloadAll">Download images</button>-->
+                            <button class="btn btn-default btn-margin-right" id="downloadAll">Скачать картинки</button>
+                        </p>
+                    </li>
+                    <li>
+                        <p class="navbar-btn">
                             <!--<button class="btn btn-primary" id="auth">Authorize</button>-->
                             <button class="btn btn-primary" id="auth">Войти</button>
                         </p>
@@ -83,8 +89,31 @@
                 </div>
             </div>
         </div>
+        <div id="downloadModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <a href="#download" download id="downloadModalLink"></a>
+                    <div class="modal-body" id="downloadModalBody">
+                        <p id="downloadModalText">На Ваше устройство будут агружены все картинки, которые в данный момент подгружены на страницу. Это может занять много времени и места на диске</p>
+                        <div class="downloadModalBody">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button id="downloadModalCancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
+                        <!--<button id="downloadModalStart" type="button" class="btn btn-default" data-dismiss="modal">Start</button>-->
+                        <button id="downloadModalCancel" type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        <button id="downloadModalStart" type="button" class="btn btn-default" data-dismiss="modal">Запуск</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div>
-            <div class="panel-group span12" id="main">
+            <div class="panel-group" id="main">
+            </div>
+
+            <div id="help">
+                <!--<p>All buttons ar in menu on the top</p>-->
+                <p>Все кнопки находятся в меню сверху</p>
             </div>
 
             <div id="loader">
