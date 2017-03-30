@@ -132,6 +132,7 @@ function auth() {
             manualLoadBtnElem.prop('disabled', false);
             loadAllBtnElem.prop('disabled', false);
             calendarElem.prop('disabled', false);
+            calendarBtnElem.prop('disabled', false);
             loadImages();
             highlightHash();
         } else {
