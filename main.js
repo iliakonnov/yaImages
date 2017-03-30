@@ -165,6 +165,7 @@ function highlight(elem) {
     if (elem.length != 0) {
         $('.panel-primary').removeClass('panel-primary').addClass('panel-default')
         elem.removeClass('panel-default').addClass('panel-primary');
+        $("html, body").animate({ scrollTop: elem.offset().top - 100 }, 1000);
         elem[0].scrollIntoView();
         return true;
     } else if (allImagesShown) {
