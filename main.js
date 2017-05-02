@@ -213,9 +213,9 @@ function downloadAll() {
             if (url) {
                 var link = document.createElement("a");
                 link.download = name;
-                link.hf = url;
+                link.href = url;
                 var elem = $(
-                    '<a href="' + id +' download="' + date + '.jpg" target="_blank"">' + date + '</a><br/>: OK'
+                    '<a href="' + id +'" target="_blank"">' + date + '</a><br/>: OK'
                 ).appendTo(downloadModalBody);
 
                 // sleep(2000);
