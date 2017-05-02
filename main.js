@@ -198,7 +198,6 @@ function highlight(elem) {
 }
 
 function downloadAll() {
-    var zip = new JSZip();
     downloadModalStart.on('click', function() {
         downloadModalCancel.prop('disabled', true);
         downloadModalStart.prop('disabled', true);
@@ -212,26 +211,15 @@ function downloadAll() {
             var date = dateBtn.text();
             var id = dateBtn.prop('href');
             if (url) {
-                $.ajax({
-                    async: false,
-                    url: url,
-                    type: "GET",
-                    dataType: 'binary',
-                    success: function(result) {
-                        var link = document.createElement("a");
-                        link.download = name;
-                        link.hf = url;
-                        link.click();
-                        // sleep(2000);
-                        var elem = $(
-                            '<a href="' + id +' download="' + date + '.jpg" target="_blank"">' + date + '</a><br/>: OK'
-                        ).appendTo(downloadModalBody)[0].click();
-                    },
-                    error: function(result) {
-                        var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Error');
-                        elem.appendTo(downloadModalBody);
-                    }
-                });
+                var link = document.createElement("a");
+                link.download = name;
+                link.hf = url;
+                var elem = $(
+                    '<a href="' + id +' download="' + date + '.jpg" target="_blank"">' + date + '</a><br/>: OK'
+                ).appendTo(downloadModalBody);
+
+                // sleep(2000);
+                link.click();
             } else {
                 var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Download link not found');
                 elem.appendTo(downloadModalBody);
@@ -251,7 +239,6 @@ $(window).ready(function() {
     downloadModalCancel = $('#downloadModalCancel');
     downloadModalStart = $('#downloadModalStart');
     downloadAllBtn = $('#downloadAll').on('click', downloadAll).prop('disabled', true);
-    downloadAllBtn.hide(0); // Because downloadAll not working
     authElem = $('#auth').on('click', auth);
     mainElem = $('#main');
     loadElem = $('#loader').hide(0);
