@@ -198,11 +198,17 @@ function highlight(elem) {
 }
 
 function downloadAll() {
+    var zip = new JSZip();
     downloadModalStart.on('click', function() {
         downloadModalCancel.prop('disabled', true);
         downloadModalStart.prop('disabled', true);
         // downloadModalText.text('Loading...');
         downloadModalText.text('Загрузка...');
+
+        // using jszip
+        var imgCount = 0;
+        var zipCount = 0;
+        var zip = new JSZip();
         $('.imagePanel').each(function(index, elem) {
             elem = $(elem);
             var url = elem.find('.downloadLink').prop('href');
@@ -216,21 +222,88 @@ function downloadAll() {
                     type: "GET",
                     dataType: 'binary',
                     success: function(result) {
+                        zip.file(date + '.jpg', result);
                         var elem = $(
-                            '<a href="' + URL.createObjectURL(result) +
-                            ' download="' + date + '.jpg" target="_blank"">' + date + '</a><br/>: OK'
-                        ).appendTo(downloadModalBody)[0].click();
+                            '<a href="' + id +' target="_blank"">' + date + '</a><br/>: OK'
+                        ).appendTo(downloadModalBody);
+                        count++;
+                        if (count > 50)
+                        {
+                            count = 0;
+                            zip.generateAsync({type:"blob"})
+                            .then(function(content) {
+                                zipCount++;
+                                saveAs(content, "images"+zipCount+".zip");
+                            });
+                            var zip = new JSZip();
+                        }
                     },
                     error: function(result) {
-                        var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Error');
-                        elem.appendTo(downloadModalBody);
+                        var elem = $(
+                            '<a href="' + id +' target="_blank"">' + date + '</a><br/>: Error'
+                        ).appendTo(downloadModalBody);
                     }
                 });
             } else {
-                var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Error');
-                elem.appendTo(downloadModalBody);
+                var elem = $(
+                    '<a href="' + id +' target="_blank"">' + date + '</a><br/>: Url not found'
+                ).appendTo(downloadModalBody);
             }
         });
+        /*
+        // Using zip.js
+        var tmpFilename = "tmp.zip";
+        requestFileSystem(TEMPORARY, 4 * 1024 * 1024 * 1024, function(filesystem) {
+            function create() {
+                filesystem.root.getFile(tmpFilename, {
+                    create : true
+                }, function(zipFile) {
+                    writer = new zip.FileWriter(zipFile);
+                    zip.createWriter(writer, function(writer) {
+                        zipWriter = writer;
+                        $('.imagePanel').each(function(index, elem) {
+                            elem = $(elem);
+                            var url = elem.find('.downloadLink').prop('href');
+                            var dateBtn = elem.find('.dateBtn')
+                            var date = dateBtn.text();
+                            var id = dateBtn.prop('href');
+                            if (url) {
+                                $.ajax({
+                                    async: false,
+                                    url: url, // my URL
+                                    type: "GET",
+                                    dataType: 'binary',
+                                    success: function(result) {
+                                        zipWriter.add(file.name, new zip.BlobReader(result), function() {}, function() {});
+                                        var elem = $(
+                                            '<a href="' + id +' target="_blank"">' + date + '</a><br/>: OK'
+                                        ).appendTo(downloadModalBody);
+                                    },
+                                    error: function(result) {
+                                        var elem = $(
+                                            '<a href="' + id +' target="_blank"">' + date + '</a><br/>: Error'
+                                        ).appendTo(downloadModalBody);
+                                    }
+                                });
+                            } else {
+                                var elem = $(
+                                    '<a href="' + id +' target="_blank"">' + date + '</a><br/>: Url not found'
+                                ).appendTo(downloadModalBody);
+                            }
+                        });
+                    }, console.log(message));
+                });
+            }
+            filesystem.root.getFile(tmpFilename, null, function(entry) {
+                entry.remove(create, create);
+            }, create);
+        });*/
+
+        var link = document.createElement("a");
+        link.download = 'images.zip';
+        link.href = zipFileEntry.toURL();;
+        link.click();
+
         $('<p>Done!</p>').appendTo(downloadModalBody);
         downloadModalCancel.prop('disabled', false);
         downloadModalStart.prop('disabled', false);
