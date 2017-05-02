@@ -204,26 +204,30 @@ function downloadAll() {
         // downloadModalText.text('Loading...');
         downloadModalText.text('Загрузка...');
 
-        $('.imagePanel').each(function(index, elem) {
+        function work(index, elem)
+        {
+            if (index % 10 == 0) debugger;
             elem = $(elem);
-            var url = elem.find('.downloadLink').prop('href');
-            var dateBtn = elem.find('.dateBtn')
-            var date = dateBtn.text();
-            var id = dateBtn.prop('href');
-            if (url) {
-                var link = document.createElement("a");
-                link.download = name;
-                link.href = url;
-                var elem = $(
-                    '<a href="' + id +'" target="_blank"">' + date + '</a><br/>: OK'
-                ).appendTo(downloadModalBody);
+                var url = elem.find('.downloadLink').prop('href');
+                var dateBtn = elem.find('.dateBtn')
+                var date = dateBtn.text();
+                var id = dateBtn.prop('href');
+                if (url) {
+                    var link = document.createElement("a");
+                    link.download = name;
+                    link.href = url;
+                    var elem = $(
+                        '<a href="' + id +'" target="_blank"">' + date + '</a><br/>: OK'
+                    ).appendTo(downloadModalBody);
 
-                // sleep(2000);
-                link.click();
-            } else {
-                var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Download link not found');
-                elem.appendTo(downloadModalBody);
-            }
+                    link.click();
+                } else {
+                    var elem = $('<a href="' + id + '" target="_blank">' + date + '</a><br/>: Download link not found');
+                    elem.appendTo(downloadModalBody);
+                }
+        }
+        $('.imagePanel').each(function(index, elem) {
+            setTimeout(function(){ work(index, elem) }, 1000*index);
         });
         $('<p>Done!</p>').appendTo(downloadModalBody);
         downloadModalCancel.prop('disabled', false);
